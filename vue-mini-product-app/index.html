@@ -11,12 +11,44 @@
 	<div id="app">
 		<div class="product">
 			<div class="product-image">
+				<!-- : is shorthand for v-bind: The v-bind works like jquery .attr() method -->
 				<img v-bind:src="image" :alt="altText">
 			</div>
 			<div class="product-info">
-				<h1>{{ product }}</h1>
+				<!-- computed properties - don't get pissed off with this word - its simply the same thing as concatenation, title expression below is a computed result of brand and product values -->
+				<h1>{{ title }}</h1>
+				<!-- v-show adds display:none style to an element. It works like jquery .show() and .hide() methods -->
+				<p v-show="inStock">We still have it.</p>
+				<!-- v-if remove an element completely from the DOM -->
+				<p v-if="inventory > 15">In Stock</p>
+				<p v-else-if="inventory <= 15 && inventory > 0">Few left</p>
+				<p v-else>Out of Stock</p>
+				<!-- iteration in vue uses v-for directives and its expression uses "in" rather than "as" and is done in reverse of the actual stuff I know in PHP (PHP will say "details as detail"). Alias comes first before Collection -->
+				<ul>
+					<li v-for="detail in details">{{ detail }}</li>
+				</ul>
+				<!-- iterate an object array, it is good to give each object a key which will be used by Vue to keep track of each nodes identity -->
+				<!-- on hover of a color div, change the image -->
+				<!-- notice that the background-color property is in Camel case, you can also use pascal case but it must be in quotes -->
+				<div v-for="variant in variants" 
+					 :key="variant.variantId"
+					 class="color-box"
+					 :style="{backgroundColor: variant.variantColor}"
+					 @mouseover="updateProduct(variant.variantImage)">
+					<!-- on hover of a color, change the image -->
+					<!-- <p @mouseover="updateProduct(variant.variantImage)" >{{ variant.variantColor }}</p> -->
+				</div>
+				<!-- on click of the button, increment the value of cart by one -->
+				<!-- <button v-on:click="cart += 1">Add to cart</button> -->
+				<!-- this is the method way of doing it -->
+				<!-- disable the button if instock is false -->
+				<button v-on:click="addToCart" 
+						:disabled="!inStock"
+						:class="{disabledButton: !inStock}">Add to cart</button>
+				<div class="cart">
+					<p>Cart ({{cart}})</p>
+				</div>
 			</div>
-			<p>{{ description }}</p>
 		</div>
 	</div>
 
